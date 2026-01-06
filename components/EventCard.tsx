@@ -32,6 +32,21 @@ export default function EventCard({
         <p>{location}</p>
       </div>
       <p>{title}</p>
+      <div className="datetime">
+        <div>
+          <Image
+            src="/icons/calendar.svg"
+            alt="calendar"
+            width={14}
+            height={14}
+          />
+          <p>{date}</p>
+        </div>
+        <div>
+          <Image src="/icons/clock.svg" alt="clock" width={14} height={14} />
+          <p>{time}</p>
+        </div>
+      </div>
     </Link>
   );
 }
