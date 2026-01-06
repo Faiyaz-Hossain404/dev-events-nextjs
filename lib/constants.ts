@@ -10,7 +10,7 @@ export type EventItem = {
 export const events: EventItem[] = [
   {
     image: "/images/event1.png",
-    title: "React Summit US 2025",
+    title: "GitHub Summit US 2025",
     slug: "react-summit-us-2025",
     location: "San Francisco, CA, USA",
     date: "2024-07-01",

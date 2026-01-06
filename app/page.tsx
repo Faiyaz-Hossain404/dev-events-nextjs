@@ -1,16 +1,6 @@
 import EventCard from "@/components/EventCard";
 import ExploreBtn from "@/components/ExploreBtn";
-
-const events = [
-  {
-    image: "/images/event1.png",
-    title: "React Summit US 2025",
-    slug: "react-summit-us-2025",
-    location: "San Francisco, CA, USA",
-    date: "2024-07-01",
-    time: "10:00 AM",
-  },
-];
+import { events } from "@/lib/constants";
 
 export default function Page() {
   return (
