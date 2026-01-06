@@ -27,6 +27,10 @@ export default function EventCard({
         height={300}
         className="poster"
       />
+      <div className="flex flex-row gap-2">
+        <Image src="/icons/pin.svg" alt="pin" width={14} height={14} />
+        <p>{location}</p>
+      </div>
       <p>{title}</p>
     </Link>
   );
