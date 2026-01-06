@@ -4,6 +4,10 @@ import Link from "next/link";
 interface Props {
   title: string;
   image: string;
+  slug: string;
+  location: string;
+  date: string;
+  time: string;
 }
 
 export default function EventCard({ title, image }: Props) {
