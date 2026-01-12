@@ -106,3 +106,23 @@ const EventSchema = new Schema<IEvent>(
   },
   { timestamps: true } //auto-generate createdAt and updatedAt fields
 );
+
+function generateSlug(title: string): string {
+  return title
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-l]/g, "") //removes special characters
+    .replace(/\s+/g, "-") //replace spaces with hephens
+    .replace(/-+/g, "-") //replace multiple hyphens with sigle hyphen
+    .replace(/^-+|-+$/g, ""); //remove leading/trailing hyphens
+}
+
+//pre-save hook for slug generation and data normalization
+EventSchema.pre("save", function (next) {
+  const event = this as IEvent;
+
+  //generate slug from title changed or document is new
+  if (event.isModified("title") || event.isNew) {
+    event.slug = generateSlug(event.title);
+  }
+});
