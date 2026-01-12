@@ -1,4 +1,5 @@
 import { Schema, Model, Document, Types } from "mongoose";
+import { normalize } from "path";
 
 //typescript interface for Event document
 export interface IEvent extends Document {
@@ -107,6 +108,7 @@ const EventSchema = new Schema<IEvent>(
   { timestamps: true } //auto-generate createdAt and updatedAt fields
 );
 
+//helper func to generate URL-friendly slug from title
 function generateSlug(title: string): string {
   return title
     .toLowerCase()
@@ -117,6 +119,15 @@ function generateSlug(title: string): string {
     .replace(/^-+|-+$/g, ""); //remove leading/trailing hyphens
 }
 
+//helper func to normalize date to ISO format
+function normalizeDate(dateSring: string): string {
+  const date = new Date(dateSring);
+  if (isNaN(date.getTime())) {
+    throw new Error("Invalid date format");
+  }
+  return date.toISOString().split("T")[0]; //return yyyy-mm-dd format
+}
+
 //pre-save hook for slug generation and data normalization
 EventSchema.pre("save", function (next) {
   const event = this as IEvent;
@@ -124,5 +135,10 @@ EventSchema.pre("save", function (next) {
   //generate slug from title changed or document is new
   if (event.isModified("title") || event.isNew) {
     event.slug = generateSlug(event.title);
+  }
+
+  //nomalize date to ISO format if it's not already
+  if (event.isModified("date")) {
+    event.date = normalizeDate(event.date);
   }
 });
