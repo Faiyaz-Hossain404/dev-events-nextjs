@@ -5,6 +5,7 @@ type MongooseCache = {
   promise: Promise<Mongoose> | null;
 };
 
+//extentd the global object to include mongoose cache
 declare global {
   var mongoose: MongooseCache | undefined;
 }
@@ -17,6 +18,7 @@ if (!MONGODV_URI) {
   );
 }
 
+//initializing the mongoose cache on the global object to persist across hot reloads in development
 const cached: MongooseCache = global.mongoose ?? {
   conn: null,
   promise: null,
