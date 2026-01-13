@@ -162,23 +162,19 @@ function normalizeTime(timeString: string): string {
 EventSchema.pre("save", async function () {
   const event = this as IEvent;
 
-  try {
-    //generate slug from title changed or document is new
-    if (event.isModified("title") || event.isNew) {
-      event.slug = generateSlug(event.title);
-    }
+  //generate slug from title changed or document is new
+  if (event.isModified("title") || event.isNew) {
+    event.slug = generateSlug(event.title);
+  }
 
-    //nomalize date to ISO format if it's not already
-    if (event.isModified("date")) {
-      event.date = normalizeDate(event.date);
-    }
+  //nomalize date to ISO format if it's not already
+  if (event.isModified("date")) {
+    event.date = normalizeDate(event.date);
+  }
 
-    //normalize time format (HH:MM)
-    if (event.isModified("time")) {
-      event.time = normalizeTime(event.time);
-    }
-  } catch (error) {
-    throw new error();
+  //normalize time format (HH:MM)
+  if (event.isModified("time")) {
+    event.time = normalizeTime(event.time);
   }
 });
 
