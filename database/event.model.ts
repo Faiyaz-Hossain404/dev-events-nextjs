@@ -1,5 +1,5 @@
-import { Schema, Model, Document, Types } from "mongoose";
-import { normalize } from "path";
+import { model } from "mongoose";
+import { Schema, Document, models } from "mongoose";
 
 //typescript interface for Event document
 export interface IEvent extends Document {
@@ -128,6 +128,36 @@ function normalizeDate(dateSring: string): string {
   return date.toISOString().split("T")[0]; //return yyyy-mm-dd format
 }
 
+//helper func to normalize time format
+function normalizeTime(timeString: string): string {
+  //handle various time formats like "2:30 PM", "14:30", etc.
+  const timeRegex = /^(\d{1,2}):(\d{2})\s?(AM|PM)$/i;
+  const match = timeString.match(timeRegex);
+
+  if (!match) {
+    throw new Error("Invalid time format. Use HH:MM AM/PM");
+  }
+
+  let hours = parseInt(match[1]);
+  const minutes = match[2];
+  const period = match[4].toUpperCase();
+
+  if (period) {
+    if (period === "PM" && hours < 12) hours += 12;
+    if (period === "AM" && hours === 12) hours = 0;
+  }
+
+  if (
+    hours < 0 ||
+    hours > 23 ||
+    parseInt(minutes) < 0 ||
+    parseInt(minutes) > 59
+  ) {
+    throw new Error("Invalid time value");
+  }
+  return `${hours.toString().padStart(2, "0")}:${minutes}`;
+}
+
 //pre-save hook for slug generation and data normalization
 EventSchema.pre("save", function (next) {
   const event = this as IEvent;
@@ -141,4 +171,18 @@ EventSchema.pre("save", function (next) {
   if (event.isModified("date")) {
     event.date = normalizeDate(event.date);
   }
+
+  //normalize time format (HH:MM)
+  if (event.isModified("time")) {
+    event.time = normalizeTime(event.time);
+  }
+  next();
 });
+
+EventSchema.index({ slug: 1 }, { unique: true });
+
+EventSchema.index({ date: 1, mode: 1 });
+
+const Event = models.Event || model<IEvent>("Event", EventSchema);
+
+export default Event;
