@@ -41,18 +41,14 @@ BookingSchema.pre("save", async function () {
 
   //only validate eventId if it's new or modified
   if (booking.isModified("eventId") || booking.isNew) {
-    try {
-      const eventExists = await Event.findById(booking.eventId).select("_id");
+    const eventExists = await Event.findById(booking.eventId).select("_id");
 
-      if (!eventExists) {
-        throw new Error(`Event with ID ${booking.eventId} does not exist`);
-      }
-    } catch {
-      const validationError = new Error(
-        "Invalid event ID format or database error"
+    if (!eventExists) {
+      const error = new Error(
+        `Event with ID ${booking.eventId} does not exist`
       );
-      validationError.name = "ValidationError";
-      throw validationError;
+      error.name = "ValidationError";
+      throw error;
     }
   }
 });
@@ -66,6 +62,6 @@ BookingSchema.index({ eventId: 1, createdAt: 1 });
 //index on email for user booking lookups
 BookingSchema.index({ email: 1 });
 
-const Booking = models || model<IBooking>("Booking", BookingSchema);
+const Booking = models.Booking || model<IBooking>("Booking", BookingSchema);
 
 export default Booking;

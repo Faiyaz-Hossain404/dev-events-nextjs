@@ -113,7 +113,7 @@ function generateSlug(title: string): string {
   return title
     .toLowerCase()
     .trim()
-    .replace(/[^a-z0-9\s-l]/g, "") //removes special characters
+    .replace(/[^a-z0-9\s-]/g, "") //removes special characters
     .replace(/\s+/g, "-") //replace spaces with hephens
     .replace(/-+/g, "-") //replace multiple hyphens with sigle hyphen
     .replace(/^-+|-+$/g, ""); //remove leading/trailing hyphens
@@ -130,20 +130,21 @@ function normalizeDate(dateSring: string): string {
 
 //helper func to normalize time format
 function normalizeTime(timeString: string): string {
-  //handle various time formats like "2:30 PM", "14:30", etc.
-  const timeRegex = /^(\d{1,2}):(\d{2})\s?(AM|PM)$/i;
-  const match = timeString.match(timeRegex);
+  //handle various time formats and convert to HH:MM (24-hour format)
+  const timeRegex = /^(\d{1,2}):(\d{2})(\s*(AM|PM))?$/i;
+  const match = timeString.trim().match(timeRegex);
 
   if (!match) {
-    throw new Error("Invalid time format. Use HH:MM AM/PM");
+    throw new Error("Invalid time format. Use HH:MM or HH:MM AM/PM");
   }
 
   let hours = parseInt(match[1]);
   const minutes = match[2];
-  const period = match[4].toUpperCase();
+  const period = match[4]?.toUpperCase();
 
   if (period) {
-    if (period === "PM" && hours < 12) hours += 12;
+    //convert 12-hour to 24-hour format
+    if (period === "PM" && hours !== 12) hours += 12;
     if (period === "AM" && hours === 12) hours = 0;
   }
 
@@ -153,8 +154,9 @@ function normalizeTime(timeString: string): string {
     parseInt(minutes) < 0 ||
     parseInt(minutes) > 59
   ) {
-    throw new Error("Invalid time value");
+    throw new Error("Invalid time values");
   }
+
   return `${hours.toString().padStart(2, "0")}:${minutes}`;
 }
 
