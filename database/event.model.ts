@@ -120,8 +120,8 @@ function generateSlug(title: string): string {
 }
 
 //helper func to normalize date to ISO format
-function normalizeDate(dateSring: string): string {
-  const date = new Date(dateSring);
+function normalizeDate(dateString: string): string {
+  const date = new Date(dateString);
   if (isNaN(date.getTime())) {
     throw new Error("Invalid date format");
   }
