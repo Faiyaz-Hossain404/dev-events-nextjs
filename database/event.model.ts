@@ -166,7 +166,16 @@ EventSchema.pre("save", async function () {
 
   //generate slug from title changed or document is new
   if (event.isModified("title") || event.isNew) {
-    event.slug = generateSlug(event.title);
+    const baseSlug = generateSlug(event.title);
+    let slug = baseSlug;
+    let counter = 1;
+
+    //check if slug exists in database
+    while (await Event.exists({ slug, _id: { $ne: event._id } })) {
+      slug = `${baseSlug}-${counter}`;
+      counter++;
+    }
+    event.slug = slug;
   }
 
   //nomalize date to ISO format if it's not already
