@@ -12,12 +12,6 @@ declare global {
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
-if (!MONGODB_URI) {
-  throw new Error(
-    "Please define the MONGODV_URI environment variable inside .env"
-  );
-}
-
 //initializing the mongoose cache on the global object to persist across hot reloads in development
 const cached: MongooseCache = global.mongooseCache ?? {
   conn: null,
@@ -36,8 +30,13 @@ async function connectDB(): Promise<Mongoose> {
 
   //return existing connection promise if one is in progress
   if (!cached.promise) {
+    if (!MONGODB_URI) {
+      throw new Error(
+        "Please define the MONGODV_URI environment variable inside .env"
+      );
+    }
     const options = {
-      bufferCommands: false, // Disable Mongoose buffering
+      bufferCommands: false, //disable Mongoose buffering
     };
 
     //create a new connection promise
