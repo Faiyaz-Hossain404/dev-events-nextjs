@@ -189,7 +189,7 @@ EventSchema.pre("save", async function () {
   }
 });
 
-EventSchema.index({ slug: 1 }, { unique: true });
+// EventSchema.index({ slug: 1 }, { unique: true });
 
 EventSchema.index({ date: 1, mode: 1 });
 

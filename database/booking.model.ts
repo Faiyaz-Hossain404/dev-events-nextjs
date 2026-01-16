@@ -1,6 +1,5 @@
-import { Document, models, Schema, Types } from "mongoose";
+import { Document, models, model, Schema, Types } from "mongoose";
 import Event from "./event.model";
-import { model } from "mongoose";
 
 export interface IBooking extends Document {
   eventId: Types.ObjectId;
@@ -41,6 +40,7 @@ BookingSchema.pre("save", async function () {
 
   //only validate eventId if it's new or modified
   if (booking.isModified("eventId") || booking.isNew) {
+    // const Event = models.Event;
     const eventExists = await Event.findById(booking.eventId).select("_id");
 
     if (!eventExists) {

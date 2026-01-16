@@ -32,18 +32,29 @@ async function connectDB(): Promise<Mongoose> {
   if (!cached.promise) {
     if (!MONGODB_URI) {
       throw new Error(
-        "Please define the MONGODV_URI environment variable inside .env"
+        "Please define the MONGODB_URI environment variable inside .env"
       );
     }
     const options = {
       bufferCommands: false, //disable Mongoose buffering
+      tls: true,
+      tlsAllowInvalidCertificates: false,
+      tlsAllowInvalidHostnames: false,
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 45000,
+      family: 4,
     };
 
     //create a new connection promise
     cached.promise = mongoose
-      .connect(MONGODB_URI!, options)
+      .connect(MONGODB_URI, options)
       .then((mongoose) => {
+        console.log("MongoDB Connected ✅");
         return mongoose;
+      })
+      .catch((err) => {
+        console.error("MongoDB Connection Error ❌:", err);
+        throw err;
       });
   }
 
