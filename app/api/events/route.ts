@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
           message: "Invalid JSON data format",
           error: e instanceof Error ? e.message : "Unknown",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
     const createdEvent = await Event.create(event);
@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
         message: "Event Created Successfully",
         event: createdEvent,
       },
-      { status: 201 }
+      { status: 201 },
     );
     // parse as JSON instead of formData
     // const event = await req.json();
@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
         message: "Event Creation Failed",
         error: e instanceof Error ? e.message : "Unknown",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
