@@ -105,7 +105,7 @@ const EventSchema = new Schema<IEvent>(
       },
     },
   },
-  { timestamps: true } //auto-generate createdAt and updatedAt fields
+  { timestamps: true }, //auto-generate createdAt and updatedAt fields
 );
 
 //helper func to generate URL-friendly slug from title
@@ -189,6 +189,7 @@ EventSchema.pre("save", async function () {
   }
 });
 
+EventSchema.index({ title: 1 }, { unique: true });
 EventSchema.index({ slug: 1 }, { unique: true });
 
 EventSchema.index({ date: 1, mode: 1 });
