@@ -85,13 +85,14 @@ export async function GET() {
   try {
     await connectDB();
 
-    const events = Event.find().sort({ createdAt: -1 });
+    const events = await Event.find().sort({ createdAt: -1 });
 
     return NextResponse.json(
       { message: "Events Fetched Successfully", events },
       { status: 200 },
     );
   } catch (e) {
+    console.error(e);
     return NextResponse.json(
       { message: "Event Fetching Failed", error: e },
       { status: 500 },
