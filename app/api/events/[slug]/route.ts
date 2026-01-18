@@ -58,7 +58,7 @@ export async function GET(
     //handle specific error types
     if (error instanceof Error) {
       //handle database connection errors
-      if (error.message.icludes("MONGODB_URI")) {
+      if (error.message.includes("MONGODB_URI")) {
         return NextResponse.json(
           { message: "Database Configuration Error" },
           { status: 500 },
