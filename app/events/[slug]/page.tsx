@@ -1,4 +1,7 @@
 import BookEvent from "@/components/BookEvent";
+import EventCard from "@/components/EventCard";
+import { IEvent } from "@/database/event.model";
+import { getSimilarEventsBySlug } from "@/lib/actions/event.actions";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
@@ -89,6 +92,7 @@ export default async function EventDetailsPage({
 
   const bookings = 10;
 
+  const similarEvents: IEvent[] = await getSimilarEventsBySlug(slug);
   return (
     <section id="event">
       <div>
@@ -151,6 +155,15 @@ export default async function EventDetailsPage({
             <BookEvent />
           </div>
         </aside>
+      </div>
+      <div className="flex w-full flex-col gap-4 pt-20">
+        <h2 className="mt-5">Similar Events</h2>
+        <div className="events">
+          {similarEvents.length > 0 &&
+            similarEvents.map((similarEvent: IEvent) => (
+              <EventCard key={similarEvent._id.toString()} {...similarEvent} />
+            ))}
+        </div>
       </div>
     </section>
   );
