@@ -48,6 +48,7 @@ export default async function Page({
       agenda,
       audience,
       tags,
+      organizer,
     },
   } = await request.json();
 
