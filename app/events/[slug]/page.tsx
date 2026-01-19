@@ -12,7 +12,7 @@ const EventDetailItem = ({
   alt: string;
   label: string;
 }) => (
-  <div>
+  <div className="flex-row-gap-2 items-center">
     <Image src={icon} alt={alt} width={17} height={17} />
     <p>{label}</p>
   </div>
@@ -46,7 +46,7 @@ export default async function Page({
     <section id="event">
       <div>
         <h1>Event Description</h1>
-        <p className="mt-2">{description}</p>
+        <p>{description}</p>
       </div>
       <div className="details">
         {/* lef side - event content */}
