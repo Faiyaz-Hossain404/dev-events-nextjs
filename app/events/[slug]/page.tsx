@@ -29,28 +29,60 @@ const EventAgenda = ({ agendaItems }: { agendaItems: string[] }) => (
   </div>
 );
 
-export default async function Page({
+const EventTags = ({ tags }: { tags: string[] }) => (
+  <div className="flex flex-row gap-1.5 flex-wrap">
+    {tags.map((tag) => (
+      <div className="pill" key={tag}>
+        {tag}
+      </div>
+    ))}
+  </div>
+);
+
+export default async function EventDetailsPage({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const request = await fetch(`${BASE_URL}/api/events/${slug}`);
+
+  let event;
+  try {
+    const request = await fetch(`${BASE_URL}/api/events/${slug}`, {
+      next: { revalidate: 60 },
+    });
+
+    if (!request.ok) {
+      if (request.status === 404) {
+        return notFound();
+      }
+      throw new Error(`Failed to fetch event: ${request.statusText}`);
+    }
+
+    const response = await request.json();
+    event = response.event;
+
+    if (!event) {
+      return notFound();
+    }
+  } catch (error) {
+    console.error("Error fetching event:", error);
+    return notFound();
+  }
+
   const {
-    event: {
-      description,
-      image,
-      overview,
-      date,
-      time,
-      location,
-      mode,
-      agenda,
-      audience,
-      tags,
-      organizer,
-    },
-  } = await request.json();
+    description,
+    image,
+    overview,
+    date,
+    time,
+    location,
+    mode,
+    agenda,
+    audience,
+    tags,
+    organizer,
+  } = event;
 
   if (!description) return notFound();
 
@@ -95,6 +127,12 @@ export default async function Page({
             />
           </section>
           <EventAgenda agendaItems={JSON.parse(agenda[0])} />
+
+          <section className="flex-col-gap-2">
+            <h2>About the Organizer</h2>
+            <p>{organizer}</p>
+          </section>
+          <EventTags tags={JSON.parse(tags[0])} />
         </div>
         {/* right side - booking content */}
         <aside className="booking">
