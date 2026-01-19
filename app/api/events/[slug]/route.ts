@@ -64,6 +64,17 @@ export async function GET(
           { status: 500 },
         );
       }
+      //return generic error
+      return NextResponse.json(
+        { message: "Failet to fetch event", error: error.message },
+        { status: 500 },
+      );
     }
+
+    //handle unknown errors
+    return NextResponse.json(
+      { message: "An unexpected error occured" },
+      { status: 500 },
+    );
   }
 }
