@@ -133,13 +133,13 @@ export default async function EventDetailsPage({
               label={audience}
             />
           </section>
-          <EventAgenda agendaItems={agenda[0]} />
+          <EventAgenda agendaItems={agenda} />
 
           <section className="flex-col-gap-2">
             <h2>About the Organizer</h2>
             <p>{organizer}</p>
           </section>
-          <EventTags tags={tags[0]} />
+          <EventTags tags={tags} />
         </div>
         {/* right side - booking content */}
         <aside className="booking">
