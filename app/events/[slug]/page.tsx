@@ -3,6 +3,21 @@ import { notFound } from "next/navigation";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
+const EventDetailItem = ({
+  icon,
+  alt,
+  label,
+}: {
+  icon: string;
+  alt: string;
+  label: string;
+}) => (
+  <div>
+    <Image src={icon} alt={alt} width={17} height={17} />
+    <p>{label}</p>
+  </div>
+);
+
 export default async function Page({
   params,
 }: {
@@ -49,6 +64,11 @@ export default async function Page({
           </section>
           <section className="flex-col-gap-2">
             <h2>Event Details</h2>
+            <EventDetailItem
+              icon="icon/calendar.svg"
+              alt="calendar"
+              label={date}
+            />
           </section>
         </div>
         {/* right side - booking content */}
