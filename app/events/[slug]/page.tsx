@@ -18,6 +18,17 @@ const EventDetailItem = ({
   </div>
 );
 
+const EventAgenda = ({ agendaItems }: { agendaItems: string[] }) => (
+  <div className="agenda">
+    <h2>Agenda</h2>
+    <ul>
+      {agendaItems.map((item) => (
+        <li key={item}>{item}</li>
+      ))}
+    </ul>
+  </div>
+);
+
 export default async function Page({
   params,
 }: {
@@ -69,7 +80,20 @@ export default async function Page({
               alt="calendar"
               label={date}
             />
+            <EventDetailItem icon="/icons/clock.svg" alt="clock" label={time} />
+            <EventDetailItem icon="/icons/pin.svg" alt="pin" label={location} />
+            <EventDetailItem
+              icon="/icons/mode.svg"
+              alt="calendar"
+              label={mode}
+            />
+            <EventDetailItem
+              icon="/icons/audience.svg"
+              alt="audience"
+              label={audience}
+            />
           </section>
+          <EventAgenda agendaItems={JSON.parse(agenda[0])} />
         </div>
         {/* right side - booking content */}
         <aside className="booking">
