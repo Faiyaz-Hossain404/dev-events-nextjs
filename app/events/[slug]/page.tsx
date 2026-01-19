@@ -65,7 +65,7 @@ export default async function Page({
           <section className="flex-col-gap-2">
             <h2>Event Details</h2>
             <EventDetailItem
-              icon="icon/calendar.svg"
+              icon="/icons/calendar.svg"
               alt="calendar"
               label={date}
             />
