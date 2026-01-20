@@ -7,6 +7,9 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 export default async function Page() {
   const response = await fetch(`${BASE_URL}/api/events`);
   const { events } = await response.json();
+  // const data = await response.json();
+  // console.log("API Response:", data);
+  // console.log("Events count:", data.events?.length);
 
   return (
     <section>

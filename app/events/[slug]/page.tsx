@@ -164,7 +164,7 @@ export default async function EventDetailsPage({
         <div className="events">
           {similarEvents.length > 0 &&
             similarEvents.map((similarEvent: IEvent) => (
-              <EventCard key={similarEvent._id?.toString()} {...similarEvent} />
+              <EventCard key={similarEvent.title} {...similarEvent} />
             ))}
         </div>
       </div>
