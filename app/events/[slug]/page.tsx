@@ -93,6 +93,9 @@ export default async function EventDetailsPage({
   const bookings = 10;
 
   const similarEvents: IEvent[] = await getSimilarEventsBySlug(slug);
+
+  console.log("similarEvents", { similarEvents });
+
   return (
     <section id="event">
       <div>
@@ -157,11 +160,11 @@ export default async function EventDetailsPage({
         </aside>
       </div>
       <div className="flex w-full flex-col gap-4 pt-20">
-        <h2 className="mt-5">Similar Events</h2>
+        <h2>Similar Events</h2>
         <div className="events">
           {similarEvents.length > 0 &&
             similarEvents.map((similarEvent: IEvent) => (
-              <EventCard key={similarEvent._id.toString()} {...similarEvent} />
+              <EventCard key={similarEvent._id?.toString()} {...similarEvent} />
             ))}
         </div>
       </div>
